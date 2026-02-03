@@ -1,0 +1,68 @@
+'use client'
+
+import { Button } from '@/components/ui/button'
+import { ArrowRight, Sparkles } from 'lucide-react'
+import Link from 'next/link'
+
+export default function Hero() {
+  return (
+    <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden px-4 sm:px-6 lg:px-8 py-12 sm:py-20">
+      {/* Animated background elements */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute top-20 right-10 w-72 h-72 bg-primary/20 rounded-full blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 left-10 w-72 h-72 bg-accent/20 rounded-full blur-3xl animate-pulse delay-1000" />
+      </div>
+
+      <div className="max-w-4xl mx-auto w-full space-y-8 text-center">
+        {/* Badge */}
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5">
+          <Sparkles className="w-4 h-4 text-primary" />
+          <span className="text-sm font-medium">AI-Powered Conservation</span>
+        </div>
+
+        {/* Main Heading */}
+        <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-balance">
+          Identify Species,{' '}
+          <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">
+            Protect Biodiversity
+          </span>
+        </h1>
+
+        {/* Description */}
+        <p className="text-lg sm:text-xl text-foreground/70 max-w-2xl mx-auto text-balance">
+          EcoLens uses advanced AI to instantly recognize and identify species from photographs. Contribute to conservation efforts and advance Sustainable Development Goal 15 with every identification.
+        </p>
+
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+          <Link href="/recognize">
+            <Button size="lg" className="w-full sm:w-auto gap-2 bg-primary hover:bg-primary/90">
+              Start Identifying <ArrowRight className="w-5 h-5" />
+            </Button>
+          </Link>
+          <Link href="/about">
+            <Button size="lg" variant="outline" className="w-full sm:w-auto bg-transparent">
+              Learn More
+            </Button>
+          </Link>
+        </div>
+
+        {/* Stats */}
+        <div className="grid grid-cols-3 gap-4 sm:gap-8 pt-12 border-t border-border/40">
+          <div className="space-y-2">
+            <div className="text-2xl sm:text-3xl font-bold text-primary">10K+</div>
+            <div className="text-sm text-foreground/60">Species Identified</div>
+          </div>
+          <div className="space-y-2">
+            <div className="text-2xl sm:text-3xl font-bold text-primary">50K+</div>
+            <div className="text-sm text-foreground/60">Active Users</div>
+          </div>
+          <div className="space-y-2">
+            <div className="text-2xl sm:text-3xl font-bold text-primary">98%</div>
+            <div className="text-sm text-foreground/60">Accuracy Rate</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
