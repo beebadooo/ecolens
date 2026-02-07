@@ -19,24 +19,6 @@ export default function RecognitionClient() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const cameraInputRef = useRef<HTMLInputElement>(null)
 
-  const mockIdentify = () => {
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false)
-      setResult({
-        name: 'Bengal Tiger',
-        scientificName: 'Panthera tigris tigris',
-        confidence: 98.5,
-        description:
-          'The Bengal tiger is a tiger population native to the Indian subcontinent. It is the most common tiger subspecies and the national animal of India and Bangladesh.',
-        habitat: 'Tropical forests, mangrove swamps, grasslands',
-        conservation: 'Endangered',
-        population: 'Approximately 2,600 in the wild',
-        threats: ['Habitat loss', 'Poaching', 'Human-wildlife conflict'],
-      })
-    }, 2000)
-  }
-
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
@@ -51,11 +33,52 @@ export default function RecognitionClient() {
     }
   }
 
-  const handleIdentify = () => {
+  const handleIdentify = async () => {
     if (!image) return
     setLoading(true)
     setError(null)
-    mockIdentify()
+
+    try {
+      // Extract base64 from data URL
+      const base64String = image.split(',')[1] || image
+
+      const response = await fetch('/api/identify-species', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          imageBase64: base64String,
+        }),
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to identify species')
+      }
+
+      const speciesData = await response.json()
+
+      // Map API response to component state
+      setResult({
+        name: speciesData.species_name,
+        scientificName: speciesData.scientific_name,
+        type: speciesData.type,
+        confidence: speciesData.confidence,
+        description: speciesData.description,
+        habitat: speciesData.habitat,
+        conservation: speciesData.conservation_status,
+        population: speciesData.estimated_population,
+        populationTrend: speciesData.population_trend,
+        threats: speciesData.threats || [],
+      })
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : 'Failed to identify species. Please try again.'
+      setError(errorMessage)
+      console.error('[v0] Species identification error:', err)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleReset = () => {
@@ -183,6 +206,11 @@ export default function RecognitionClient() {
                   <div className="space-y-2">
                     <h3 className="text-2xl font-bold">{result.name}</h3>
                     <p className="text-foreground/70 italic">{result.scientificName}</p>
+                    {result.type && (
+                      <p className="text-sm bg-primary/20 text-primary w-fit px-3 py-1 rounded-full">
+                        {result.type}
+                      </p>
+                    )}
                   </div>
 
                   <div className="space-y-4">
@@ -208,9 +236,14 @@ export default function RecognitionClient() {
                         <p className="text-primary font-medium">{result.conservation}</p>
                       </div>
                       <div>
-                        <h4 className="font-semibold mb-1 text-sm">Population</h4>
-                        <p className="text-foreground/70 text-sm">{result.population}</p>
+                        <h4 className="font-semibold mb-1 text-sm">Population Trend</h4>
+                        <p className="text-foreground/70 text-sm">{result.populationTrend}</p>
                       </div>
+                    </div>
+
+                    <div>
+                      <h4 className="font-semibold mb-2">Estimated Population</h4>
+                      <p className="text-foreground/70 text-sm">{result.population}</p>
                     </div>
 
                     <div>
