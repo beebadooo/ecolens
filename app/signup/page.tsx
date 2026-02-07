@@ -3,6 +3,7 @@
 import React from "react"
 
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import Header from '@/components/header'
 import Footer from '@/components/footer'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -13,8 +14,10 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Checkbox } from '@/components/ui/checkbox'
 import { Eye, EyeOff, Leaf, CheckCircle } from 'lucide-react'
 import Link from 'next/link'
+import { signUp } from '@/lib/auth'
 
 export default function SignupPage() {
+  const router = useRouter()
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -69,8 +72,11 @@ export default function SignupPage() {
       return
     }
 
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      // Sign up with Firebase
+      await signUp(formData.email, formData.password, formData.fullName)
+      
+      // Show success state
       setSuccess(true)
       setFormData({
         fullName: '',
@@ -78,8 +84,16 @@ export default function SignupPage() {
         password: '',
         confirmPassword: '',
       })
+      
+      // Redirect to login after 3 seconds
+      setTimeout(() => {
+        router.push('/login')
+      }, 3000)
+    } catch (err: any) {
+      setError(err.message || 'Failed to create account. Please try again.')
+    } finally {
       setIsLoading(false)
-    }, 1000)
+    }
   }
 
   if (success) {

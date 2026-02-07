@@ -9,33 +9,25 @@ import { Alert, AlertDescription } from '@/components/ui/alert'
 import Header from '@/components/header'
 import Footer from '@/components/footer'
 import { Camera, Upload, Loader2, CheckCircle, AlertCircle, Download } from 'lucide-react'
-import Image from 'next/image'
+
+type SpeciesIdentification = {
+  name: string
+  scientificName: string
+  description: string
+  habitat: string
+  conservation: string
+  population: string
+  threats: string[]
+  confidence: number
+}
 
 export default function RecognitionClient() {
   const [image, setImage] = useState<string | null>(null)
   const [loading, setLoading] = useState(false)
-  const [result, setResult] = useState<any>(null)
+  const [result, setResult] = useState<SpeciesIdentification | null>(null)
   const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const cameraInputRef = useRef<HTMLInputElement>(null)
-
-  const mockIdentify = () => {
-    // Simulate API call
-    setTimeout(() => {
-      setLoading(false)
-      setResult({
-        name: 'Bengal Tiger',
-        scientificName: 'Panthera tigris tigris',
-        confidence: 98.5,
-        description:
-          'The Bengal tiger is a tiger population native to the Indian subcontinent. It is the most common tiger subspecies and the national animal of India and Bangladesh.',
-        habitat: 'Tropical forests, mangrove swamps, grasslands',
-        conservation: 'Endangered',
-        population: 'Approximately 2,600 in the wild',
-        threats: ['Habitat loss', 'Poaching', 'Human-wildlife conflict'],
-      })
-    }, 2000)
-  }
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -51,11 +43,44 @@ export default function RecognitionClient() {
     }
   }
 
-  const handleIdentify = () => {
+  const handleIdentify = async () => {
     if (!image) return
     setLoading(true)
     setError(null)
-    mockIdentify()
+
+    try {
+      // Convert base64 image to Blob
+      const base64Data = image.split(',')[1]
+      const mimeType = image.match(/data:([^;]+)/)?.[1] || 'image/jpeg'
+      const binaryData = atob(base64Data)
+      const uint8Array = new Uint8Array(binaryData.length)
+      for (let i = 0; i < binaryData.length; i++) {
+        uint8Array[i] = binaryData.charCodeAt(i)
+      }
+      const blob = new Blob([uint8Array], { type: mimeType })
+      
+      // Create FormData and send to API
+      const formData = new FormData()
+      formData.append('file', blob, 'image')
+      
+      const response = await fetch('/api/identify', {
+        method: 'POST',
+        body: formData
+      })
+      
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to identify species')
+      }
+      
+      const identification = await response.json()
+      setResult(identification)
+    } catch (err: any) {
+      setError(err.message || 'Failed to identify species. Please try a clearer image.')
+      console.error('Identification error:', err)
+    } finally {
+      setLoading(false)
+    }
   }
 
   const handleReset = () => {

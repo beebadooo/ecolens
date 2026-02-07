@@ -75,17 +75,6 @@ export default function Footer() {
 
         <div className="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-foreground/60">
           <div>© {currentYear} EcoLens. All rights reserved.</div>
-          <div className="flex gap-6">
-            <Link href="#" className="hover:text-foreground transition-colors">
-              Twitter
-            </Link>
-            <Link href="#" className="hover:text-foreground transition-colors">
-              LinkedIn
-            </Link>
-            <Link href="#" className="hover:text-foreground transition-colors">
-              GitHub
-            </Link>
-          </div>
         </div>
       </div>
     </footer>

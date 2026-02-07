@@ -44,10 +44,6 @@ export default function HowItWorks() {
             const Icon = step.icon
             return (
               <div key={index} className="relative">
-                {/* Connection line */}
-                {index < steps.length - 1 && (
-                  <div className="hidden lg:block absolute top-20 left-1/2 w-full h-0.5 bg-gradient-to-r from-primary to-accent opacity-30" />
-                )}
 
                 <Card className="border-border/40 bg-gradient-to-br from-background to-secondary/10 h-full">
                   <CardContent className="pt-8 pb-6">
