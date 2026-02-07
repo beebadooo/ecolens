@@ -34,13 +34,31 @@ export default function RecognitionClient() {
   }
 
   const handleIdentify = async () => {
-    if (!image) return
+    if (!image) {
+      setError('Please upload or capture an image first.')
+      return
+    }
+    
+    // Prevent multiple simultaneous requests
+    if (loading) return
+    
     setLoading(true)
     setError(null)
+    setResult(null)
 
     try {
-      // Extract base64 from data URL
-      const base64String = image.split(',')[1] || image
+      console.log('[v0] Starting species identification...')
+      
+      // Extract base64 from data URL - handle both formats
+      const base64String = image.includes('base64,') 
+        ? image.split(',')[1] 
+        : image
+
+      if (!base64String || base64String.length === 0) {
+        throw new Error('Invalid image data')
+      }
+
+      console.log('[v0] Sending image to API, size:', base64String.length)
 
       const response = await fetch('/api/identify-species', {
         method: 'POST',
@@ -54,10 +72,12 @@ export default function RecognitionClient() {
 
       if (!response.ok) {
         const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to identify species')
+        console.error('[v0] API error response:', errorData)
+        throw new Error(errorData.error || errorData.details || 'Failed to identify species')
       }
 
       const speciesData = await response.json()
+      console.log('[v0] Species identified:', speciesData.species_name)
 
       // Map API response to component state
       setResult({
@@ -155,11 +175,14 @@ export default function RecognitionClient() {
                 ) : (
                   <div className="space-y-4">
                     <div className="relative w-full h-64 bg-secondary/20 rounded-lg overflow-hidden">
-                      <img
-                        src={image || "/placeholder.svg"}
-                        alt="Uploaded species"
-                        className="w-full h-full object-cover"
-                      />
+                      {image && (
+                        <img
+                          src={image}
+                          alt="Uploaded species"
+                          className="w-full h-full object-cover"
+                          crossOrigin="anonymous"
+                        />
+                      )}
                     </div>
 
                     <Button
