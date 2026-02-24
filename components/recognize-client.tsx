@@ -230,7 +230,15 @@ export default function RecognitionClient() {
                     <div className="grid grid-cols-2 gap-4">
                       <div>
                         <h4 className="font-semibold mb-1 text-sm">Conservation Status</h4>
-                        <p className="text-primary font-medium">{result.conservation}</p>
+                        <p
+                          className={`font-medium ${
+                            result.conservation?.toLowerCase() === 'vulnerable'
+                              ? 'text-red-500'
+                              : 'text-primary'
+                          }`}
+                        >
+                          {result.conservation}
+                        </p>
                       </div>
                       <div>
                         <h4 className="font-semibold mb-1 text-sm">Population</h4>

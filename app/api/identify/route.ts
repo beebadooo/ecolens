@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { identifySpecies } from '@/lib/gemini';
+import { identifySpeciesWithHuggingFace } from '@/lib/huggingface';
 
 export async function POST(request: NextRequest) {
     try {
@@ -17,8 +17,20 @@ export async function POST(request: NextRequest) {
         const buffer = Buffer.from(await file.arrayBuffer());
         const mimeType = file.type;
 
-        // Call the Gemini function
-        const result = await identifySpecies(buffer, mimeType);
+        // Call the Hugging Face-based function
+        const hfResult = await identifySpeciesWithHuggingFace(buffer, mimeType);
+
+        // Map Hugging Face result fields to the shape expected by the client
+        const result = {
+            name: hfResult.species_name || 'Unknown',
+            scientificName: hfResult.scientific_name || 'Unknown',
+            description: hfResult.description || 'No description available',
+            habitat: hfResult.habitat || 'Unknown',
+            conservation: hfResult.conservation_status || 'Unknown',
+            population: hfResult.estimated_population || hfResult.population_trend || 'Unknown',
+            threats: Array.isArray(hfResult.threats) ? hfResult.threats : [],
+            confidence: typeof hfResult.confidence === 'number' ? hfResult.confidence : 0,
+        };
 
         return NextResponse.json(result);
     } catch (error: any) {
