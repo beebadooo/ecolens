@@ -2,7 +2,7 @@
 
 A modern, full-featured web application for species identification using artificial intelligence. EcoLens enables conservation professionals, researchers, and citizen scientists to identify species and contribute to global biodiversity monitoring efforts. This project advances **SDG 15: Life on Land** through technology-enabled conservation.
 
-## 🌿 Features
+<!-- ## 🌿 Features
 
 ### Core Functionality
 - **🎯 AI Species Recognition** - 98% accuracy species identification from photos
@@ -10,9 +10,9 @@ A modern, full-featured web application for species identification using artific
 - **⚡ Real-time Results** - Get identification results in under 1 second
 - **🌍 Global Database** - Access information on 10,000+ species worldwide
 - **📊 Community Features** - Share findings and contribute to conservation data
-- **🔒 Secure & Private** - Encrypted data handling with user privacy controls
+- **🔒 Secure & Private** - Encrypted data handling with user privacy controls -->
 
-### Pages & Components
+<!-- ### Pages & Components
 
 #### Public Pages
 - **Home** - Landing page with hero, features, how-it-works, testimonials
@@ -30,13 +30,12 @@ A modern, full-featured web application for species identification using artific
 - **Testimonials** - User reviews and success stories
 - **Footer** - Links, copyright, and social media
 
-## 🚀 Getting Started
+## 🚀 Getting Started -->
 
-### Prerequisites
+<!-- ### Prerequisites
 - Node.js 18+ 
 - npm, yarn, or pnpm
-- Modern web browser
-
+- Modern web browser -->
 ### Installation
 
 1. **Clone or download the project**
@@ -62,7 +61,7 @@ pnpm dev
 4. **Open in browser**
 Navigate to `http://localhost:3000`
 
-## 📁 Project Structure
+<!-- ## 📁 Project Structure
 
 ```
 ecolens/
@@ -113,7 +112,7 @@ ecolens/
 Built with **shadcn/ui** for consistent, accessible UI components:
 - Button, Card, Input, Label, Badge, Alert
 - Custom animations and transitions
-- Responsive design patterns
+- Responsive design patterns -->
 
 ## 🔧 Technology Stack
 
@@ -122,9 +121,9 @@ Built with **shadcn/ui** for consistent, accessible UI components:
 - **Styling**: Tailwind CSS with custom design tokens
 - **Icons**: Lucide React
 - **Language**: TypeScript
-- **Deployment**: Vercel-ready
+- **Image classification**: Hugging face API
 
-## 📝 Key Files
+<!-- ## 📝 Key Files
 
 ### Theme Configuration
 - `/app/globals.css` - Design tokens (colors, spacing, radius)
@@ -270,4 +269,4 @@ Built for advancing **SDG 15: Life on Land** through AI-powered conservation tec
 
 ---
 
-**Happy coding! 🌿** Help us protect biodiversity through technology.
+**Happy coding! 🌿** Help us protect biodiversity through technology. -->

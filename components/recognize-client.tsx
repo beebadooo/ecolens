@@ -309,15 +309,6 @@ export default function RecognitionClient() {
                       </div>
                     ))}
                   </div>
-
-                  <Card className="bg-primary/5 border-primary/20 mt-6">
-                    <CardContent className="pt-4">
-                      <p className="text-sm text-foreground/70">
-                        <strong>💡 Tip:</strong> Your identifications contribute to a global database helping scientists
-                        monitor biodiversity. Every identification counts!
-                      </p>
-                    </CardContent>
-                  </Card>
                 </CardContent>
               </Card>
             )}

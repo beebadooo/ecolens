@@ -14,12 +14,6 @@ export default function Hero() {
       </div>
 
       <div className="max-w-4xl mx-auto w-full space-y-8 text-center">
-        {/* Badge */}
-        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/30 bg-primary/5">
-          <Sparkles className="w-4 h-4 text-primary" />
-          <span className="text-sm font-medium">AI-Powered Conservation</span>
-        </div>
-
         {/* Main Heading */}
         <h1 className="text-4xl sm:text-5xl lg:text-7xl font-bold tracking-tight text-balance">
           Identify Species,{' '}
@@ -45,22 +39,6 @@ export default function Hero() {
               Learn More
             </Button>
           </Link>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-3 gap-4 sm:gap-8 pt-12 border-t border-border/40">
-          <div className="space-y-2">
-            <div className="text-2xl sm:text-3xl font-bold text-primary">10K+</div>
-            <div className="text-sm text-foreground/60">Species Identified</div>
-          </div>
-          <div className="space-y-2">
-            <div className="text-2xl sm:text-3xl font-bold text-primary">50K+</div>
-            <div className="text-sm text-foreground/60">Active Users</div>
-          </div>
-          <div className="space-y-2">
-            <div className="text-2xl sm:text-3xl font-bold text-primary">98%</div>
-            <div className="text-sm text-foreground/60">Accuracy Rate</div>
-          </div>
         </div>
       </div>
     </section>
